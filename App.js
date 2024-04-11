@@ -13,7 +13,7 @@ import { FIREBASE_AUTH } from './firebaseConfig';
 import CheckoutScreen from './components/CheckoutScreen';
 import { View } from 'react-native';
 import BottomNavBar from './components/BottomNavBar';
-import HomeScreen from './components/HomeScreen';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -26,7 +26,7 @@ function InsideNav() {
       {/* <InsideStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
       {/* <InsideStack.Screen name="Checkout" component={CheckoutScreen} options={{ headerShown: false }} /> */}
       {/* <InsideStack.Screen name="FoodLocker" component={FoodLockerScreen} options={{ headerShown: false }} /> */}
-      <InsideStack.Screen name="McDonaldsDetail" component={McDonaldsDetailScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="McDonaldsDetail" component={HomeScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="Cart" component={CartScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="SubmittingOrder" component={SubmittingOrderScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="Orders" component={OrdersScreen} options={{ headerShown: false }} />
