@@ -7,12 +7,14 @@ import CartScreen from './components/CartScreen';
 import SubmittingOrderScreen from './components/SubmittingOrderScreen';
 import OrdersScreen from './components/OrdersScreen';
 import LoginScreen from './components/LoginScreen';
+import HomeScreen from './components/HomeScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './firebaseConfig';
 import CheckoutScreen from './components/CheckoutScreen';
 import { View } from 'react-native';
 import BottomNavBar from './components/BottomNavBar';
-// import HomeScreen from './components/HomeScreen';
+import HomeScreen from './components/HomeScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -42,13 +44,13 @@ function InsideLayout() {
 }
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("user1");
 
-  useEffect(() => {
+  /*useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setUser(user);
     })
-  }, []);
+  }, []); */
 
   return (
     <NavigationContainer>

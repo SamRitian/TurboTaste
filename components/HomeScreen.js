@@ -1,8 +1,20 @@
-import React from 'react';
-import { StatusBar, TouchableOpacity, View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, TouchableOpacity, View, Text, Image, ScrollView, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Carousel from 'react-native-snap-carousel';
 import { Dimensions } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import offersLogo from '../assets/icons-offers2.png';
+import groceryLogo from '../assets/icons-grocery.png';
+import petsLogo from '../assets/icons-pets.png';
+import alcoholLogo from '../assets/icons-alcohol.png';
+import beautyLogo from '../assets/icons-beauty.png';
+import pizzaLogo from '../assets/icons-pizza38.png';
+import mexicanLogo from '../assets/icons-mexican38.png';
+import chineseLogo from '../assets/icons-chinese38.png';
+import donutsLogo from  '../assets/icons-donuts38.png';
+import sandwichLogo from '../assets/icons-sandwich38.png';
+import nachosLogo from '../assets/icons-nachos38.png';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -14,26 +26,26 @@ const itemWidth = screenWidth; // Adjust margin as needed
 const windowSize = 2;
 
 const upperMenu = [
-  { name: 'home', label: 'Offers' },
-  { name: 'search', label: 'Grocery' },
-  { name: 'shopping-cart', label: 'Alcohol' },
-  { name: 'heart-o', label: 'Pets' },
-  { name: 'user-circle', label: 'Beauty' },
-];
-
-const foodTypesMenu = [
-  { name: 'home', label: 'Pizza' },
-  { name: 'search', label: 'Mexican' },
-  { name: 'sushi', label: 'Chinese' },
-  { name: 'donut', label: 'Donuts' },
-  { name: 'sandwich', label: 'Sandwich' },
-  { name: 'nachos', label: 'Nachos' },
-];
+  { name: 'offersLogo', label: 'Offers', image: offersLogo },
+  { name: 'groceryLogo', label: 'Grocery', image: groceryLogo},
+  { name: 'alcoholLogo', label: 'Alcohol' , image: alcoholLogo},
+  { name: 'petsLogo', label: 'Pets', image: petsLogo},
+  { name: 'beautyLogo', label: 'Beauty', image: beautyLogo},
+ ];
+ 
+ const foodTypesMenu = [
+  { name: 'Pizza', label: 'Pizza' , image: pizzaLogo},
+  { name: 'Mexican', label: 'Mexican', image: mexicanLogo },
+  { name: 'Chinese', label: 'Chinese', image: chineseLogo },
+  { name: 'Donut', label: 'Donuts', image: donutsLogo},
+  { name: 'Sandwich', label: 'Sandwich', image: sandwichLogo },
+  { name: 'Nachos', label: 'Nachos', image: nachosLogo},
+ ];
 
 const miniMenuOptions = [
   { name: 'dashcube', label: 'DashPass' },
   { name: 'shopping-cart', label: 'Pickup' },
-  { name: 'truck', label: 'Mass Delivery' },
+  { name: 'star', label: 'Mass Delivery' },
 ];
 
 const restaurantItems = [
@@ -61,10 +73,16 @@ const restaurantItems = [
     deal: '$0.50 delivery fee with Mass Delivery',
     specialDeal: '20% off, up to 5$',
     image: require('../assets/mcdonalds_burger.jpg'),
-}
+  },
 ];
 
 export default function HomeScreen() {
+
+  const [massDeliveryActive, setMassDeliveryActive] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [deliveryLocations, setDeliveryLocations] = useState([]);
+
   // Renders the carousel items
   const renderItem = ({ item }) => (
     <View style={styles.carouselItem}>
@@ -84,114 +102,208 @@ export default function HomeScreen() {
     </View>
   );
 
+  const handleMassDeliveryPress = () => {
+    // Toggle massDeliveryActive state
+    setMassDeliveryActive(!massDeliveryActive);
+    // Show instructions when Mass Delivery is active
+    setShowInstructions(!showInstructions);
+    // Toggle showMap state to show/hide the map
+    setShowMap(!showMap);
+    setDeliveryLocations(['Deliver to Suzzallo Library', 'Deliver to Lander Hall', 'Deliver to Center Table']);
+  };
+
   return (
-    
-    <ScrollView contentContainerStyle={styles.scrollView}>
-       <View style={styles.header}>
-        <View style={styles.locationContainer}>
-          <FontAwesome name="map-pin" size={20} color="black" style={styles.locationIcon} />
-          <Text style={styles.currentLocation}>UW</Text>
-          <FontAwesome name="chevron-down" size={16} color="gray" style={styles.dropdownIcon} />
-        </View>
-        <View style={styles.iconContainer}>
-          <FontAwesome name="user-circle" size={24} color="black" style={styles.iconMargin} />
-          <FontAwesome name="bell" size={24} color="black" style={styles.iconMargin} />
-          <FontAwesome name="shopping-cart" size={24} color="black" style={styles.iconMargin} />
-        </View>
-      </View>
-     
-      <View style={styles.searchBar}>
-        <FontAwesome name="search" size={24} color="gray" style={styles.searchIcon} />
-        <Text style={styles.searchPlaceholder}>Search Doordash</Text>
-      </View> 
-
-      <View style={styles.topMenu}>
-        {upperMenu.map((icon, index) => (
-          <View key={index} style={styles.topMenuItem}>
-            <FontAwesome name={icon.name} size={24} color="gray" />
-            <Text style={styles.topMenuLabel}>{icon.label}</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.scrollView}  stickyHeaderIndices={[0]}
+      stickyHeaderHiddenOnScroll={false}>
+        {/* Header Information */}
+        <View style={styles.stickyHeader}>
+          
+          <View style={styles.header}>
+            <View style={styles.locationContainer}>
+              <FontAwesome name="map-pin" size={20} color="black" style={styles.locationIcon} />
+              <Text style={styles.currentLocation}>UW</Text>
+              <FontAwesome name="chevron-down" size={16} color="gray" style={styles.dropdownIcon} />
+            </View>
+            <View style={styles.iconContainer}>
+              <FontAwesome name="user-circle" size={24} color="black" style={styles.iconMargin} />
+              <FontAwesome name="bell" size={24} color="black" style={styles.iconMargin} />
+              <FontAwesome name="shopping-cart" size={24} color="black" style={styles.iconMargin} />
+            </View>
           </View>
-        ))}
+        
+        {/* Search Bar */}
+        <View style={styles.searchBarContainer}>
+          <View style={styles.searchBar}>
+            <FontAwesome name="search" size={24} color="gray" style={styles.searchIcon} />
+            <Text style={styles.searchPlaceholder}>Search Doordash</Text>
+          </View> 
+        </View>
       </View>
 
-      <View style={styles.topMenu}>
-        {foodTypesMenu.map((icon, index) => (
-          <View key={index} style={styles.topMenuItem}>
-            <FontAwesome name={icon.name} size={24} color="gray" />
-            <Text style={styles.topMenuLabel}>{icon.label}</Text>
+        {/* Top Menu */}
+        <View style={styles.topMenu}>
+          {upperMenu.map((item, index) => (
+            <View key={index} style={styles.topMenuItem}>
+              {item.image && <Image source={item.image} style={styles.menuIcon} />}
+              <Text style={styles.topMenuLabel}>{item.label}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Top Menu (Food Types) */}
+        <View style={styles.topMenu}>
+          {foodTypesMenu.map((icon, index) => (
+            <View key={index} style={styles.topMenuItem}>
+              {icon.image && <Image source={icon.image} style={styles.menuIcon} />}
+              <Text style={styles.topMenuLabel}>{icon.label}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Mini Menu (DashPass, Pickup, Mass Delivery) */}
+        <View style={styles.miniMenu}>
+          {miniMenuOptions.map((option, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.miniMenuItem,
+                option.label === 'Mass Delivery' && massDeliveryActive ? styles.activeDelivery : null,
+              ]}
+              onPress={() => option.label === 'Mass Delivery' && handleMassDeliveryPress()}>
+              <FontAwesome name={option.name} size={16} color={option.label === 'Mass Delivery' && massDeliveryActive ? 'white' : 'black'} style={styles.miniMenuItemIcon} />
+              <Text style={[styles.miniMenuItemLabel, option.label === 'Mass Delivery' && massDeliveryActive && styles.activeDeliveryText]}>{option.label}</Text>
+            </TouchableOpacity>
+              ))}
+        </View>
+
+        {/* Conditional rendering for instructions */}
+        {massDeliveryActive && showInstructions && (
+          <View style={styles.instructionsContainer}>
+            <Text style={styles.instructionsTitle}>How it Works</Text>
+            <Text style={styles.instructionsText}>1. Select your preferred “Hub” location {"\n"}</Text>
+            <Text style={styles.instructionsText}>2. Select your restaurant and food of choice {"\n"}</Text>
+            <Text style={styles.instructionsText}>3. Check-out and pick up from your selected “Hub” location via order iD or QR code</Text>
+            <TouchableOpacity style={styles.gotItButton} onPress={() => setShowInstructions(false)}>
+              <Text style={styles.gotItButtonText}>Got it</Text>
+            </TouchableOpacity>
           </View>
-        ))}
-      </View>
+        )}
 
-      <View style={styles.miniMenu}>
-        {miniMenuOptions.map((option, index) => (
-          <TouchableOpacity key={index} style={styles.miniMenuItem}>
-            <FontAwesome name={option.name} size={16} color="gray" style={styles.miniMenuItemIcon} />
-            <Text style={styles.miniMenuItemLabel}>{option.label}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+        {massDeliveryActive && showMap && (
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: 47.655548,
+                longitude: -122.303200,
+                latitudeDelta: 0.0922 / 4,
+                longitudeDelta: 0.0421 / 4,
+              }}>
+              <Marker
+                coordinate={{
+                  latitude: 47.65593061839695,
+                  longitude: -122.30780715979577,
+                }}
+                title="Suzzallo Food Locker"
+              />
+              <Marker
+                coordinate={{
+                  latitude: 47.660441,
+                  longitude: -122.303969,
+                }}
+                title="Center Table Food Locker"
+              />
+              <Marker
+                coordinate={{
+                  latitude:  47.655646,
+                  longitude: -122.311398,
+                }}
+                title="Lander Food Locker"
+              />
+            </MapView>
+          </View> 
+        )}
 
-      <View style={styles.container}>
-        <Text style={styles.catagoryTitle}>Recently Viewed</Text>
-        <Carousel
-          data={restaurantItems}
-          renderItem={renderItem}
-          sliderWidth={screenWidth}
-          itemWidth={itemWidth}
-          windowSize={windowSize}
-        />
+        {/* Carousel */}
+        <View style={styles.container}>
+          <View style={styles.catagoryTitleContainer}>
+            <Text style={styles.catagoryTitle}>{massDeliveryActive ? 'Deliver to Suzzallo Library' : 'Recently Viewed'}</Text>
+            <FontAwesome name="angle-right" color="gray" style={styles.arrowIcon} />
+          </View>
+          <Carousel
+            data={restaurantItems}
+            renderItem={renderItem}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth}
+            windowSize={windowSize}
+            snapToInterval={undefined}
+            slideStyle={styles.carouselSlide}
+          />
 
-        <Text style={styles.catagoryTitle}>Top Restaurants</Text>
-        <Carousel
-          data={restaurantItems}
-          renderItem={renderItem}
-          sliderWidth={screenWidth}
-          itemWidth={itemWidth}
-          windowSize={windowSize}
-        />
+          {/* Carousel */}
+          <View style={styles.catagoryTitleContainer}>
+            <Text style={styles.catagoryTitle}>{massDeliveryActive ? 'Deliver to Lander Hall' : 'Top Restaurants'}</Text>
+            <FontAwesome name="angle-right" color="gray" style={styles.arrowIcon} />
+          </View>
+          <Carousel
+            data={restaurantItems}
+            renderItem={renderItem}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth}
+            windowSize={windowSize}
+            snapToInterval={undefined}
+            slideStyle={styles.carouselSlide}
+          />
 
-        <Text style={styles.catagoryTitle}>All Stores</Text>
-        <Carousel
-          data={restaurantItems}
-          renderItem={renderItem}
-          sliderWidth={screenWidth}
-          itemWidth={itemWidth}
-          windowSize={windowSize}
-        />
-      </View>
+          {/* Carousel */}
+          <View style={styles.catagoryTitleContainer}>
+            <Text style={styles.catagoryTitle}>{massDeliveryActive ? 'Deliver to Center Table' : 'All Stores'}</Text>
+            <FontAwesome name="angle-right" color="gray" style={styles.arrowIcon} />
+          </View>
+          <Carousel
+            data={restaurantItems}
+            renderItem={renderItem}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth}
+            windowSize={windowSize}
+            snapToInterval={undefined}
+            slideStyle={styles.carouselSlide}
+          />
+        </View>
 
-      <View style={styles.bottomNavigationBar}>
-        <View style={styles.navItem}>
-          <FontAwesome name="home" size={24} color="red" />
-          <Text style={styles.navText}>Home</Text>
+        {/* Bottom Navigation Bar */}
+        <View style={styles.bottomNavigationBar}>
+          <View style={styles.navItem}>
+            <FontAwesome name="home" size={24} color="red" />
+            <Text style={styles.navText}>Home</Text>
+          </View>
+          <View style={styles.navItem}>
+            <FontAwesome name="shopping-basket" size={24} color="gray" />
+            <Text style={styles.navText}>Grocery</Text>
+          </View>
+          <View style={styles.navItem}>
+            <FontAwesome name="tag" size={24} color="gray" />
+            <Text style={styles.navText}>Retail</Text>
+          </View>
+          <View style={styles.navItem}>
+            <FontAwesome name="search" size={24} color="gray" />
+            <Text style={styles.navText}>Search</Text>
+          </View>
+          <View style={styles.navItem}>
+            <FontAwesome name="file-text-o" size={24} color="gray" />
+            <Text style={styles.navText}>Order</Text>
+          </View>
         </View>
-        <View style={styles.navItem}>
-          <FontAwesome name="shopping-basket" size={24} color="gray" />
-          <Text style={styles.navText}>Grocery</Text>
-        </View>
-        <View style={styles.navItem}>
-          <FontAwesome name="tag" size={24} color="gray" />
-          <Text style={styles.navText}>Retail</Text>
-        </View>
-        <View style={styles.navItem}>
-          <FontAwesome name="search" size={24} color="gray" />
-          <Text style={styles.navText}>Search</Text>
-        </View>
-        <View style={styles.navItem}>
-          <FontAwesome name="file-text-o" size={24} color="gray" />
-          <Text style={styles.navText}>Order</Text>
-        </View>
-      </View>
-    </ScrollView>
-    
+      </ScrollView>
+    </SafeAreaView> 
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: 15,
+    //marginLeft: 15,
   },
   scrollView: {
     flexGrow: 1,
@@ -224,14 +336,27 @@ const styles = StyleSheet.create({
   iconMargin: {
     marginLeft: 25,
   },
-  iconContainer: {
-    flexDirection: 'row',
-  },
   searchBar: {
     flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: 'transparent',
     paddingHorizontal: 10,
     paddingVertical: 5,
+    borderRadius: 30, // Make it oval-shaped
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2, // For Android shadow
+  },
+  searchBarContainer: {
+    backgroundColor: '#fff', // White background
+    borderRadius: 30, // Same as searchBar
+    overflow: 'hidden', // Ensure oval shape is maintained
+    marginLeft: 10,
+    marginRight: 10,
   },
   searchIcon: {
     marginRight: 10,
@@ -261,6 +386,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     paddingHorizontal: 10,
     paddingVertical: 5,
+    marginBottom: 15,
   },
   miniMenuItem: {
     flexDirection: 'row',
@@ -277,6 +403,58 @@ const styles = StyleSheet.create({
   miniMenuItemLabel: {
     fontSize: 14,
     color: 'black',
+  },
+  instructionsContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 20,
+    marginHorizontal: 20,
+    marginTop: 15,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  instructionsTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  instructionsTextContainer: {
+    marginLeft: 20, // Add left margin to create indentation
+  },
+  instructionsText: {
+    fontSize: 16,
+  },
+  gotItButton: {
+    marginTop: 20,
+    backgroundColor: '#ddd',
+    borderRadius: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  gotItButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  activeDelivery: {
+    backgroundColor: 'black',
+  },
+  activeDeliveryText: {
+    color: 'white',
+  },
+  map: {
+    height: 250,
+    borderRadius: 20,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 20, // Adjust as needed
   },
   carouselItem: {
     marginBottom: 30,
@@ -300,10 +478,28 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,  // Adjust the font size as needed,
   },
+  catagoryTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    marginBottom: 10,
+  },
+  catagoryTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    fontFamily: 'roboto-bold',
+  },
+  arrowIcon: {
+    fontSize: 22,
+  },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
+    justifyContent: 'flex-end',
+    marginRight: -10,
+    marginTop: -20,
+  }, 
   heartIcon: {
     size: 25,
   },
@@ -358,5 +554,12 @@ const styles = StyleSheet.create({
   navText: {
     fontSize: 10, // Smaller font size for the text
     color: 'gray',
+  },
+  carouselSlide: {
+    marginLeft: 20, // Blake: Adjusted to carousel to left align
+    marginRight: -90, //distance between images
+  },
+  stickyHeader: {
+    backgroundColor: 'f2f2f2', 
   }
 });
