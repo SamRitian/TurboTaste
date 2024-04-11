@@ -41,7 +41,6 @@ const upperMenu = [
   { name: 'Sandwich', label: 'Sandwich', image: sandwichLogo },
   { name: 'Nachos', label: 'Nachos', image: nachosLogo},
  ];
- 
 
 const miniMenuOptions = [
   { name: 'dashcube', label: 'DashPass' },
@@ -83,7 +82,6 @@ export default function HomeScreen() {
   const [showInstructions, setShowInstructions] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [deliveryLocations, setDeliveryLocations] = useState([]);
-
 
   // Renders the carousel items
   const renderItem = ({ item }) => (
@@ -563,6 +561,5 @@ const styles = StyleSheet.create({
   },
   stickyHeader: {
     backgroundColor: 'f2f2f2', 
-  },
-
+  }
 });
