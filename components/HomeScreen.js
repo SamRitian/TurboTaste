@@ -79,6 +79,19 @@ const restaurantItems = [
     specialDeal: '20% off, up to 5$',
     image: require('../assets/mcdonalds_burger.jpg'),
   },
+
+  {
+    name: 'McDonald\'s',
+    cuisine: 'Burgers',
+    price: '$$',
+    rating: '4.7',
+    reviews: '(1300)',
+    orderDistance: '1.4 miles',
+    orderTime: '20 min',
+    deal: '$0.50 delivery fee with Mass Delivery',
+    specialDeal: '20% off, up to 5$',
+    image: require('../assets/mcdonalds_burger.jpg'),
+},
 ];
 
 export default function HomeScreen() {
@@ -242,7 +255,8 @@ export default function HomeScreen() {
             sliderWidth={screenWidth}
             itemWidth={screenWidth}
             windowSize={windowSize}
-            snapToInterval={undefined}
+            snapToInterval={0}
+            snapToOffsets={[0, screenWidth, screenWidth * 2]}
             slideStyle={styles.carouselSlide}
           />
 
@@ -276,30 +290,6 @@ export default function HomeScreen() {
             slideStyle={styles.carouselSlide}
           />
         </View>
-
-        {/* Bottom Navigation Bar */}
-        <View style={styles.bottomNavigationBar}>
-          <View style={styles.navItem}>
-            <FontAwesome name="home" size={24} color="red" />
-            <Text style={styles.navText}>Home</Text>
-          </View>
-          <View style={styles.navItem}>
-            <FontAwesome name="shopping-basket" size={24} color="gray" />
-            <Text style={styles.navText}>Grocery</Text>
-          </View>
-          <View style={styles.navItem}>
-            <FontAwesome name="tag" size={24} color="gray" />
-            <Text style={styles.navText}>Retail</Text>
-          </View>
-          <View style={styles.navItem}>
-            <FontAwesome name="search" size={24} color="gray" />
-            <Text style={styles.navText}>Search</Text>
-          </View>
-          <View style={styles.navItem}>
-            <FontAwesome name="file-text-o" size={24} color="gray" />
-            <Text style={styles.navText}>Order</Text>
-          </View>
-        </View>
       </ScrollView>
     </SafeAreaView> 
   );
@@ -312,7 +302,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flexGrow: 1,
-    paddingBottom: screenHeight * 0.2, // Adjust the paddingBottom to make space for the bottomNavigationBar
+    paddingBottom: screenHeight * 0.00, // Adjust the paddingBottom to make space for the bottomNavigationBar
   },
   header: {
     flexDirection: 'row',
@@ -321,7 +311,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    marginTop: 35,
+    //marginTop: 10,
   },
   locationContainer: {
     flexDirection: 'row',
@@ -503,7 +493,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginRight: -10,
-    marginTop: -20,
+    marginTop: -15,
   }, 
   heartIcon: {
     size: 25,
@@ -514,8 +504,8 @@ const styles = StyleSheet.create({
   },
   carouselImage: {
     width: '100%',
-    height: screenWidth / 2., // Adjust height to make it shorter
-    aspectRatio: 1.6, // Adjust aspect ratio to make it wider
+    height: screenWidth / 2, // Adjust height to make it shorter
+    aspectRatio: 1.65, // Adjust aspect ratio to make it wider
     borderRadius: 10, // Rounded corners
   },
   carouselInfo: {
@@ -561,8 +551,8 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   carouselSlide: {
-    marginLeft: 20, // Blake: Adjusted to carousel to left align
-    marginRight: -90, //distance between images
+    marginLeft: 10, // Blake: Adjusted to carousel to left align
+   // marginRight: -110, //distance between images
   },
   stickyHeader: {
     backgroundColor: 'f2f2f2', 
