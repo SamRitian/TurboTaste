@@ -23,9 +23,9 @@ const InsideStack = createNativeStackNavigator();
 function InsideNav() {
   return (
     <InsideStack.Navigator>
-      {/* <InsideStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} /> */}
-      {/* <InsideStack.Screen name="Checkout" component={CheckoutScreen} options={{ headerShown: false }} /> */}
-      {/* <InsideStack.Screen name="FoodLocker" component={FoodLockerScreen} options={{ headerShown: false }} /> */}
+      <InsideStack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="Checkout" component={CheckoutScreen} options={{ headerShown: false }} />
+      <InsideStack.Screen name="FoodLocker" component={FoodLockerScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="McDonaldsDetail" component={HomeScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="Cart" component={CartScreen} options={{ headerShown: false }} />
       <InsideStack.Screen name="SubmittingOrder" component={SubmittingOrderScreen} options={{ headerShown: false }} />
