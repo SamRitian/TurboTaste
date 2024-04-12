@@ -25,6 +25,8 @@ const itemWidth = screenWidth; // Adjust margin as needed
 // Adjust windowSize based on your requirements
 const windowSize = 2;
 
+
+// `Use Dummy Data`
 const upperMenu = [
   { name: 'offersLogo', label: 'Offers', image: offersLogo },
   { name: 'groceryLogo', label: 'Grocery', image: groceryLogo},
@@ -32,7 +34,8 @@ const upperMenu = [
   { name: 'petsLogo', label: 'Pets', image: petsLogo},
   { name: 'beautyLogo', label: 'Beauty', image: beautyLogo},
  ];
-  
+
+ // `Use Dummy Data`
  const foodTypesMenu = [
   { name: 'Pizza', label: 'Pizza' , image: pizzaLogo},
   { name: 'Mexican', label: 'Mexican', image: mexicanLogo },
