@@ -32,7 +32,7 @@ const upperMenu = [
   { name: 'petsLogo', label: 'Pets', image: petsLogo},
   { name: 'beautyLogo', label: 'Beauty', image: beautyLogo},
  ];
- 
+  
  const foodTypesMenu = [
   { name: 'Pizza', label: 'Pizza' , image: pizzaLogo},
   { name: 'Mexican', label: 'Mexican', image: mexicanLogo },
@@ -48,6 +48,7 @@ const miniMenuOptions = [
   { name: 'star', label: 'Mass Delivery' },
 ];
 
+// `Use Dummy Data` 
 const restaurantItems = [
   {
       name: 'McDonald\'s',
@@ -62,6 +63,7 @@ const restaurantItems = [
       image: require('../assets/mcdonalds_burger.jpg'),
   },
 
+  // `Use Dummy Data` 
   {
     name: 'McDonalds',
     cuisine: 'Burgers',
