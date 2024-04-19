@@ -66,13 +66,13 @@ function InsideLayout() {
 }
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("user1");
 
-  useEffect(() => {
+  /*useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setUser(user);
     })
-  }, []);
+  }, []); */
 
   return (
     <NavigationContainer>

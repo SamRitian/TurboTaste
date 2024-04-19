@@ -37,7 +37,6 @@ const HomeScreen = () => {
     try {
       const orderPoolRef = collection(FIREBASE_DB, 'OrderPools');
       const response = await getDocs(orderPoolRef);
-
       const orderPools = [];
       response.forEach(orderPool => {
         orderPools.push({
