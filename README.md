@@ -1,6 +1,9 @@
 # TurboTaste
 
-Brief description of what this project does and who it's for.
+A Mass Delivery feature provides students with aﬀordable, convenient access to a wider variety of food options.
+
+# Video Demo
+[Alex's user story](https://drive.google.com/file/d/1wr_M9mue9oyAhsxRYAwl82aOxHgNWMWC/view)
 
 ## Prerequisites
 
