@@ -30,5 +30,5 @@ For iOS amulator, press `i`.
 
 ## Our Team
 
-- Aryan Shah : Product Manager, UI/UX Designer
+- Hongyiming Cui: Project Manager, UI/UX Designer
 - Sam You: Full-Stack Developer
